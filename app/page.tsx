@@ -2,6 +2,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { addTask, Task } from "./types/types"
 import { useForm } from "react-hook-form"
+import { Trash2, Check } from "lucide-react";
 
 export default function Home() {
 
@@ -86,22 +87,66 @@ export default function Home() {
 
 
 	return (
-		<div>
-			<h1>Task List</h1>
-			<form onSubmit={handleSubmit(onSubmit)}>
-				<input {...register("name")} />
-				<button type="submit">Add Task</button>
-			</form>
-			<ul>
-					{data.map((task, index) => {
-						return 	<li key={index}>
-							<p>{task.name} | {task.status}</p>
-							<button onClick={() => onDelete(task.id)}>Delete</button>
-							{task.status === "Todo" && <button onClick={() => onMarkComplete(task.id)}>Mark Completed</button>}
-						</li>
-					})}
-				</ul>
-		</div>
+		<div className="max-w-md mx-auto mt-10 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+  <h1 className="text-lg font-semibold tracking-tight text-neutral-900 mb-6">
+    Task List
+  </h1>
+
+  <form onSubmit={handleSubmit(onSubmit)} className="flex gap-2 mb-6">
+    <input
+      {...register("name")}
+      placeholder="Add a new task..."
+      className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+    <button
+      type="submit"
+      className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800 transition"
+    >
+      Add
+    </button>
+  </form>
+
+  <div className="space-y-2">
+    {!(data.length === 0) ?data.map((task, index) => (
+      <div
+        key={index}
+        className="flex items-center justify-between rounded-lg border border-neutral-200 px-4 py-3 hover:bg-neutral-50 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-neutral-900">
+            {task.name}
+          </span>
+          <span
+            className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+              task.status === "Todo"
+                ? "bg-amber-100 text-amber-800"
+                : "bg-emerald-100 text-emerald-800"
+            }`}
+          >
+            {task.status}
+          </span>
+        </div>
+
+        <div className="flex gap-1.5">
+          {task.status === "Todo" && (
+            <button
+              onClick={() => onMarkComplete(task.id)}
+              className="flex h-8 w-8 items-center justify-center rounded-md bg-emerald-100 text-emerald-700 hover:bg-emerald-200 transition"
+            >
+              <Check className="h-4 w-4" />
+            </button>
+          )}
+          <button
+            onClick={() => onDelete(task.id)}
+            className="flex h-8 w-8 items-center justify-center rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    )) : <p className="flex p-3 items-center justify-center rounded-md bg-red-100 text-red-700 hover:bg-red-200 transition">You Have No Tasks Yet!</p>}
+  </div>
+</div>
 	);
 }
 
