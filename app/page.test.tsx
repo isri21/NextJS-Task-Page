@@ -11,6 +11,6 @@ describe("Check If everything loads.", () => {
   it("Should Test Some Thing", async () => {
     const queryClient = new QueryClient()
     render(<QueryClientProvider client={queryClient}><Home/></QueryClientProvider>);
-    expect(await screen.findByRole("textbox", { name: "input-task" })).toBeInTheDocument()
+    expect(await screen.findByRole("textbox", { name: "input-task" })).not.toBeInTheDocument()
   });
 });
