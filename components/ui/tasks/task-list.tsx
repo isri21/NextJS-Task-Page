@@ -5,6 +5,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface TaskListProps {
   tasks: Task[] | undefined;
   isLoading: boolean;
+  isError: boolean;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
   onComplete: (task: Task) => void;
@@ -13,6 +14,7 @@ interface TaskListProps {
 export function TaskList({
   tasks,
   isLoading,
+  isError,
   onEdit,
   onDelete,
   onComplete,
@@ -20,9 +22,19 @@ export function TaskList({
   if (isLoading) {
     return (
       <div className="space-y-2">
-        {[...Array(3)].map((_, i) => (
+        {[1, 2, 3].map((_, i) => (
           <Skeleton key={i} className="h-[52px] w-full rounded-lg" />
         ))}
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex flex-col items-center gap-3 rounded-md bg-red-50 p-4 text-center">
+        <p className="text-sm text-red-700">
+          Couldn&apos;t reach the server, at this moment! Please try again later.
+        </p>
       </div>
     );
   }
