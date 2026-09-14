@@ -1,11 +1,16 @@
 import { Task } from "@/types/types";
 import { TaskItem } from "./task-item";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 interface TaskListProps {
   tasks: Task[] | undefined;
   isLoading: boolean;
   isError: boolean;
+  onRefetch: (
+    options?: RefetchOptions | undefined,
+  ) => Promise<QueryObserverResult<Task[], Error>>;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
   onComplete: (task: Task) => void;
@@ -16,6 +21,7 @@ export function TaskList({
   isLoading,
   isError,
   onEdit,
+  onRefetch,
   onDelete,
   onComplete,
 }: TaskListProps) {
@@ -33,8 +39,12 @@ export function TaskList({
     return (
       <div className="flex flex-col items-center gap-3 rounded-md bg-red-50 p-4 text-center">
         <p className="text-sm text-red-700">
-          Couldn&apos;t reach the server, at this moment! Please try again later.
+          Couldn&apos;t reach the server. Please try again.
+          later.
         </p>
+        <Button size="sm" variant="outline" onClick={() => onRefetch()}>
+          Retry
+        </Button>
       </div>
     );
   }

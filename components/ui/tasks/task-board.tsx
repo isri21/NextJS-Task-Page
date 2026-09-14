@@ -11,7 +11,7 @@ import { TaskEditDialog } from "./task-edit-dialog";
 import { ConfirmDialog } from "./confirm-dialog";
 
 export function TaskBoard() {
-  const { data: tasks, isLoading, isError } = useTasksQuery();
+  const { data: tasks, isLoading, isError, refetch } = useTasksQuery();
 
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [deletingTask, setDeletingTask] = useState<Task | null>(null);
@@ -38,6 +38,7 @@ export function TaskBoard() {
         tasks={tasks}
         isLoading={isLoading}
         isError={isError}
+        onRefetch={refetch}
         onEdit={setEditingTask}
         onDelete={setDeletingTask}
         onComplete={(task) => markComplete(task.id)}
